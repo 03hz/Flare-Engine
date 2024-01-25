@@ -13,6 +13,8 @@ roblox.yml
 # Roblox Studio holds 'lock' files on places
 *.rbxl.lock
 *.rbxlx.lock
+*.tsbuildinfo
+.DS_Store
 
 ### Node ###
 # Logs
