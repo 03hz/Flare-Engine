@@ -4,6 +4,9 @@
 /*.rbxl
 /*.rbxlx
 
+roblox.toml
+roblox.yml
+
 # Test places for the Roblox Studio Plugin
 /plugin/*.rbxlx
 
