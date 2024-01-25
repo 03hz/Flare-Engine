@@ -409,3 +409,6 @@ FodyWeavers.xsd
 # Roblox Studio holds 'lock' files on places
 *.rbxl.lock
 *.rbxlx.lock
+
+# Node
+node_modules
