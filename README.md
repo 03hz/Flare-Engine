@@ -1,1 +1,2 @@
-# SyllaX (Flare) Engine
+# Flare Engine
+Aka. SyllaX Engine
