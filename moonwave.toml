@@ -1,3 +1,6 @@
 title = "Flare-Engine"
 gitRepoUrl = "https://github.com/rixtys/Flare-Engine"
 gitSourceBranch = "main"
+projectName = "Flare-Engine"
+url = "https://rixtys.github.io"
+autoSectionPath = "src"
