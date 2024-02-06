@@ -1,0 +1,3 @@
+local CurrentProfiles = {}
+
+return CurrentProfiles

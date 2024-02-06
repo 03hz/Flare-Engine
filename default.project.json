@@ -1,0 +1,12 @@
+{
+  "name": "Flare-Engine",
+  "tree": {
+    "$className": "DataModel",
+
+    "ServerScriptService": {
+      "src": {
+        "$path": "src"
+      }
+    }
+  }
+}
