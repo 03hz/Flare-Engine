@@ -1,7 +1,19 @@
 --[=[
-	Flare-Engine Client Framework.
+	Flare-Engine Client Framework. Handles client modules.
+	
+	Client framework is loaded via client script that has been replicated by the server:
+
+	```lua
+	local Players = game:GetService("Players");
+	local LocalPlayer = Players.LocalPlayer;
+
+	script.Parent = LocalPlayer.PlayerScripts;
+	local ClientFramework = require(script:WaitForChild("Framework"));
+	ClientFramework.loadClient();
+	```
 
 	@class FlareServer
+	@server
 ]=]
 
 local FlareClient = {}
@@ -26,7 +38,6 @@ local Types = require(script.Types);
 
 type self = {
 	CachedModules: typeof({}),
-	RuntimeModules: typeof({}),
 	
 	GameVariables: {
 		LocalPlayer: Player,

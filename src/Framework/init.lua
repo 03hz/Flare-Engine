@@ -5,8 +5,8 @@
 
 	```lua
 	local ServerScriptService = game:GetService("ServerScriptService");
-	local FrameworkModule = require(ServerScriptService:WaitForChild("src"):WaitForChild("Framework"));
-	local Framework = FrameworkModule.bootstrapGame();
+	local Framework = require(ServerScriptService:WaitForChild("src"):WaitForChild("Framework"));
+	Framework.bootstrapGame();
 	```
 
 	@class FlareServer
@@ -35,14 +35,13 @@ local Types = require(script.Types);
 
 type self = {
 	CachedModules: typeof({}),
-	RuntimeModules: typeof({}),
 	GameSignals: { RBXScriptSignal }
 }
 
 --[=[
 	Framework self type.
 
-	@type self { CachedModules: typeof({}), RuntimeModules: typeof({}), GameSignals: { RBXScriptSignal }
+	@type self { CachedModules: typeof({}), GameSignals: { RBXScriptSignal }
 
 	@within FlareServer
 ]=]
@@ -65,6 +64,7 @@ export type FrameworkType = typeof(setmetatable({} :: self, FlareServer));
 	@return FrameworkType?
 	@server
 ]=]
+
 function FlareServer.bootstrapGame(): FrameworkType?
 	if FlareServer.__gameIsLoaded or not RunService:IsServer() then return; end;
 
@@ -125,6 +125,7 @@ end;
 
 	@return boolean
 ]=]
+
 function FlareServer.gameIsLoaded(): boolean
 	return FlareServer.__gameIsLoaded;
 end;
@@ -146,6 +147,7 @@ end;
 
 	@return RequireType
 ]=]
+
 function FlareServer:GetModulesFromCache(): Types.RequireType
 	return function(Args: string | ModuleScript): {}
 		if type(Args) == "string" then
