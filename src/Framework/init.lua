@@ -5,8 +5,7 @@
 
 	```lua
 	local ServerScriptService = game:GetService("ServerScriptService");
-	local Framework = require(ServerScriptService:WaitForChild("src"):WaitForChild("Framework"));
-	Framework.bootstrapGame();
+	local Framework = require(ServerScriptService:WaitForChild("src"):WaitForChild("Framework")).bootstrapGame();
 	```
 
 	@class FlareServer
@@ -109,7 +108,6 @@ end;
 
 	@prop CachedModules {}
 	@within FlareServer
-	@readonly
 ]=]
 
 --[=[
@@ -117,7 +115,6 @@ end;
 
 	@prop GameSignals {}
 	@within FlareServer
-	@readonly
 ]=]
 
 --[=[
@@ -136,6 +133,9 @@ end;
 	Returns a function to require utilities and modules within framework.
 
 	```lua
+	local ServerScriptService = game:GetService("ServerScriptService");
+	local Framework = require(ServerScriptService:WaitForChild("src"):WaitForChild("Framework"));
+
 	local require = Framework:GetModulesFromCache();
 
 	local Maid = require("Maid");

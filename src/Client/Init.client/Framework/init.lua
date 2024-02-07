@@ -8,12 +8,11 @@
 	local LocalPlayer = Players.LocalPlayer;
 
 	script.Parent = LocalPlayer.PlayerScripts;
-	local ClientFramework = require(script:WaitForChild("Framework"));
-	ClientFramework.loadClient();
+	local Framework = require(script:WaitForChild("Framework")).loadClient();
 	```
 
-	@class FlareServer
-	@server
+	@class FlareClient
+	@client
 ]=]
 
 local FlareClient = {}
@@ -50,9 +49,33 @@ type self = {
 	LocalClientStorage: Instance
 }
 
+--[=[
+	Framework self type.
+
+	@type self { CachedModules: typeof({}), GameVariables: { LocalPlayer: Player, Character: Model?, Humanoid: Humanoid?, Camera: Camera }, GameSignals: { RBXScriptSignal }, LocalClientStorage: Instance }
+
+	@within FlareClient
+]=]
+
 export type FrameworkType = typeof(setmetatable({} :: self, FlareClient));
 
+--[=[
+	Framework type.
+
+	@type FrameworkType typeof(setmetatable({} :: self, FlareClient))
+	@within FlareClient
+]=]
+
 --// [ Constructor: ]
+
+--[=[
+	Flare-Engine Client module loader.
+
+	@within FlareClient
+	@return FrameworkType?
+	@client
+]=]
+
 function FlareClient.loadClient(): FrameworkType?
 	if FlareClient.__gameIsLoaded or not RunService:IsClient() then return; end;
 	
@@ -112,14 +135,68 @@ function FlareClient.loadClient(): FrameworkType?
 	end;
 end;
 
+--[=[
+	Framework variable storing every single cached module.
+
+	@prop CachedModules {}
+	@within FlareClient
+]=]
+
+--[=[
+	Framework variable storing framework signals.
+
+	@prop GameSignals {}
+	@within FlareClient
+]=]
+
+--[=[
+	Framework a table containing client changing variables.
+
+	@prop GameVariables { LocalPlayer: Player, Character: Model?, Humanoid: Humanoid?, Camera: Camera };
+	@within FlareClient
+]=]
+
+--[=[
+	Local client storage. Mainly used to store Guis.
+
+	@prop LocalClientStorage Instance;
+	@within FlareClient
+]=]
+
 --// [ Modules: ]
 
 --// [ External: ]
+
+--[=[
+	Returns if the client has loaded.
+
+	@return boolean
+]=]
+
 function FlareClient.gameIsLoaded(): boolean
 	return FlareClient.__gameIsLoaded;
 end;
 
 --// [ Script Runtime: ]
+
+--[=[
+	Returns a function to require utilities and modules within framework.
+
+	```lua
+	local Framework = require(script.Parent.Parent:WaitForChild("Framework")); --// Script must be a descendant of your framework module
+
+	local require = Framework:GetModulesFromCache();
+
+	local Maid = require("Maid");
+	local newMaid = Maid.new(); --> Maid
+
+	local Spring = require("Spring");
+	local newSpring = Spring.new(); --> Spring
+	```
+
+	@return RequireType
+]=]
+
 function FlareClient:GetModulesFromCache(): Types.RequireType
 	return function(Args: string | ModuleScript): {}
 		if type(Args) == "string" then
