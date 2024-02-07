@@ -1,8 +1,4 @@
 export type RequireType = (ModuleScript | "Maid" | "Network" | "Promise" | "Roact" | "Signal" | "Spring") -> {}
-export type BaseRuntimeModule = {
-	Init: (any?),
-	Start: (any?)
-}
 
 --[=[
 	Framework type returned on `FlareServer:GetModulesFromCache()`.
@@ -10,6 +6,11 @@ export type BaseRuntimeModule = {
 	@type RequireType (ModuleScript | "Maid" | "Network" | "Promise" | "Roact" | "Signal" | "Spring") -> {}
 	@within FlareServer
 ]=]
+
+export type BaseRuntimeModule = {
+	Init: (any?),
+	Start: (any?)
+}
 
 --[=[
 	Framework type used by runtime modules.

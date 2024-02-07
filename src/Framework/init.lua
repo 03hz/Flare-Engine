@@ -23,10 +23,11 @@ FlareServer.__gameIsLoaded = false;
 local Players = game:GetService("Players");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local ReplicatedFirst = game:GetService("ReplicatedFirst");
+local ServerScriptService = game:GetService("ServerScriptService");
 local RunService = game:GetService("RunService");
 
 --// Directories
-local src = script.Parent;
+local src = ServerScriptService:FindFirstChild("src");
 local Server, Client, Shared = src:WaitForChild("Server"), src:WaitForChild("Client"), src:WaitForChild("Shared");
 
 --// [ Types: ]

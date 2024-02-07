@@ -1,0 +1,23 @@
+{
+  "name": "flare-engine",
+  "version": "1.0.0",
+  "description": "An organized script framework for faster game development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rixtys/Flare-Engine.git"
+  },
+  "keywords": [
+    "Roblox",
+    "Framework"
+  ],
+  "author": "rixtys",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rixtys/Flare-Engine/issues"
+  },
+  "homepage": "https://github.com/rixtys/Flare-Engine#readme"
+}
