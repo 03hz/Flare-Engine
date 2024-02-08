@@ -7,8 +7,7 @@ export type LayerData = {
 		Default: {
 			OnEntry: (any),
 			OnExit: (any),
-			Events: {},
-			IgnoreEvents: {}?
+			UpdateLogic: (any)
 		}
 	}
 	
@@ -43,6 +42,9 @@ local LayeredStateMachine = {}
 LayeredStateMachine.ClassName = "LayeredStateMachine"
 LayeredStateMachine.CurrentGroups = {};
 
+--// Services
+local RunService = game:GetService("RunService");
+
 --[=[
 	Creates a new state machine group used for layers.
 	
@@ -53,43 +55,59 @@ LayeredStateMachine.CurrentGroups = {};
 function LayeredStateMachine:CreateGroup(Name: string): NewGroup
 	local NewGroup = LayeredStateMachine.CurrentGroups[Name];
 	NewGroup = {};
-	NewGroup.ActiveStates = {};
+	NewGroup.Layers = {};
 
 	function NewGroup:GetLayer(Name: string): NewLayer
 		return NewGroup[Name] :: NewLayer;
 	end;	
-
+	
 	function NewGroup:CreateLayer(LayerData: LayerData): NewLayer
-		local NewLayer: NewLayer = NewGroup[LayerData.LayerName];
+		local NewLayer: NewLayer = NewGroup.Layers[LayerData.LayerName];
 		NewLayer = {};
+		NewLayer.States = {};
 		setmetatable(NewLayer, NewGroup);
 
 		for Name, State in pairs(LayerData.States) do
-			NewGroup.ActiveStates[Name] = State;
+			NewLayer.States[Name] = State;
 		end;
 
 		--// Variables
 		NewLayer.CurrentState = LayerData.Initial;
+		NewLayer.CurrentUpdateLogicConnection = nil;
 		NewLayer.Changed = Signal.new();
 		
 		--// Methods
 		function NewLayer:SetState(State: string): string
-			local OldStateName = NewLayer.CurrentState;
-			local OldState = NewGroup.ActiveStates[OldStateName];
-
-			if OldState.Events[State] then
-				local FoundState = OldState.Events[State];
-				local NewState = NewGroup.ActiveStates[FoundState]
-				
-				OldState.OnExit();
-				NewState.OnEntry();
-				NewLayer.CurrentState = FoundState;
-
-				NewLayer.Changed:Fire(OldStateName, FoundState);
+			local OldState = NewLayer.States[NewLayer.CurrentState];
+			local NewState = NewLayer.States[State];
+					
+			OldState.OnExit();
+			if NewLayer.CurrentUpdateLogicConnection then
+				NewLayer.CurrentUpdateLogicConnection:Disconnect();
 			end;
+
+			NewState.OnEntry();
+			if type(NewState["UpdateLogic"]) == "function" then
+				NewLayer.CurrentUpdateLogicConnection = RunService.RenderStepped:Connect(function()
+					NewState.UpdateLogic();
+				end);
+			end;
+
+			NewLayer.CurrentState = State;
+
+			NewLayer.Changed:Fire(OldState, NewState);
 		end;
 		
 		return NewLayer;
+	end;
+
+	function NewGroup:SetStates(States: {string})
+		for Layer: string, State: string in pairs(States) do
+			local FoundLayer: NewLayer = NewGroup.Layers[Layer];
+			if FoundLayer then
+				FoundLayer:SetState(State);
+			end;
+		end;
 	end;
 
 	return NewGroup;

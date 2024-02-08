@@ -150,6 +150,7 @@ end;
 ]=]
 
 function FlareServer:GetModulesFromCache(): Types.RequireType
+	assert(not FlareServer.__gameIsLoaded, "Whilst using Flare-Engine externally, please wait for the framework to load.");
 	return function(Args: string | ModuleScript): {}
 		if type(Args) == "string" then
 			local FoundModule = self.CachedModules[Args];
