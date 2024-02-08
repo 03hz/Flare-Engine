@@ -14,7 +14,7 @@ type MessageData = {
 
 local require = Framework:GetModulesFromCache();
 
-function SystemMessagingService:Init(): self 
+function SystemMessagingService:Init(): {}
 	local self = setmetatable({}, SystemMessagingService);
 
 	self.Network = require("Network");

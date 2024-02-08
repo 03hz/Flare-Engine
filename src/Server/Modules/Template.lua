@@ -4,7 +4,7 @@ local Framework = require(ServerScriptService:WaitForChild("src"):WaitForChild("
 local Template = {}
 Template.__index = Template;
 
-function Template.Init(): self
+function Template.Init(): {}
 	--// Optional
 	--// Utilities, connections
 	local self = setmetatable({}, Template);

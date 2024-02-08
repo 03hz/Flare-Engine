@@ -49,7 +49,7 @@ local States = {
 }
 
 --// [ Constructor: ]
-function MovementHandler.Init(): self
+function MovementHandler.Init(): {}
 	local self = setmetatable({}, MovementHandler);
 
 	local KeybindManager = require("KeybindManager");

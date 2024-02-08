@@ -16,7 +16,7 @@ local Maid = require("Maid");
 local Keybinds = require(script:WaitForChild("Keybinds"));
 
 --// [ Constructor: ]
-function KeybindManager.Init(): self
+function KeybindManager.Init(): {}
 	local self = setmetatable({}, KeybindManager);
 
 	self._runtimeMaid = Maid.new();

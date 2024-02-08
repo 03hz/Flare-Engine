@@ -21,7 +21,7 @@ local Maid = require("Maid");
 local DefaultProfile = require(script:WaitForChild("DefaultDataProfile"));
 
 --// [ Constructor: ]
-function DataManager.Init(): self
+function DataManager.Init(): {}
 	local self = setmetatable({}, DataManager);
 	
 	self._runtimeMaid = Maid.new();

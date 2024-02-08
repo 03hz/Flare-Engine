@@ -13,7 +13,7 @@ local TweenService = game:GetService("TweenService");
 local Camera = Workspace.CurrentCamera;
 
 --// [ Constructor: ]
-function FieldOfViewManager.Init(): self
+function FieldOfViewManager.Init(): {}
 	local self = setmetatable({}, FieldOfViewManager);
 
 	self.FOVTable = {

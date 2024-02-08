@@ -23,7 +23,7 @@ local Configuration = {
 	SoftShutdownPlaceID = 16017998700
 }
 
-function ServerStatusManager.Init(): self
+function ServerStatusManager.Init(): {}
 	local self = setmetatable({}, ServerStatusManager);
 
 	self.TeleportServiceUtils = require(script:WaitForChild("TeleportServiceUtils"));

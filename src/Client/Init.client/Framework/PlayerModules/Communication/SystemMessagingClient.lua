@@ -10,7 +10,7 @@ local GeneralChatChannel = TextChatService.TextChannels:WaitForChild("RBXGeneral
 local require = Framework:GetModulesFromCache();
 local Network = require("Network");
 
-function SystemMessagingClient.Init(): self
+function SystemMessagingClient.Init(): {}
 	local self = setmetatable({}, SystemMessagingClient);
 	
 	Network:BindEvents({
