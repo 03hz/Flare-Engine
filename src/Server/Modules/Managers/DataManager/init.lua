@@ -7,14 +7,11 @@ DataManager.__index = DataManager;
 --// [ Variables: ]
 
 --// Services
-local Players = game:getService("Players");
-local ReplicatedStorage = game:GetService("ReplicatedStorage");
-local ServerScriptService = game:GetService("ServerScriptService")
+local Players = game:GetService("Players");
 
 --// Utilities
 local require = Framework:GetModulesFromCache();
 local ProfileService = require("ProfileService");
-local Network = require("Network");
 local Maid = require("Maid");
 
 --// Default profile

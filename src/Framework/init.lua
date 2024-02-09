@@ -20,7 +20,6 @@ FlareServer.__gameIsLoaded = false;
 --// [ Locals: ]
 
 --// Services
-local Players = game:GetService("Players");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local ReplicatedFirst = game:GetService("ReplicatedFirst");
 local ServerScriptService = game:GetService("ServerScriptService");
@@ -194,6 +193,10 @@ function FlareServer:_PreloadModuleDirectory(Directory: Instance): ()
 					ModuleList[Module.Name] = RequiredModule;
 				end;
 			end);
+
+			if not success and err then
+				print(Module.Name .. "Has failed to load. Error: " .. err);
+			end;
 		end;
 	end;
 

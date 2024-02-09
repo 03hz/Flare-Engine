@@ -57,8 +57,8 @@ function LayeredStateMachine:CreateGroup(Name: string): NewGroup
 	NewGroup = {};
 	NewGroup.Layers = {};
 
-	function NewGroup:GetLayer(Name: string): NewLayer
-		return NewGroup[Name] :: NewLayer;
+	function NewGroup:GetLayer(LayerName: string): NewLayer
+		return NewGroup[LayerName] :: NewLayer;
 	end;	
 	
 	function NewGroup:CreateLayer(LayerData: LayerData): NewLayer
@@ -67,8 +67,8 @@ function LayeredStateMachine:CreateGroup(Name: string): NewGroup
 		NewLayer.States = {};
 		setmetatable(NewLayer, NewGroup);
 
-		for Name, State in pairs(LayerData.States) do
-			NewLayer.States[Name] = State;
+		for StateName, State in pairs(LayerData.States) do
+			NewLayer.States[StateName] = State;
 		end;
 
 		--// Variables

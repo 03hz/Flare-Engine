@@ -243,6 +243,8 @@ function FlareClient:_PreloadModuleDirectory(Directory: Instance): ()
 			
 			if success then
 				Module.Name = "";
+			else
+				print(Module.Name .. "Has failed to load. Error: " .. err);
 			end;
 		end;
 	end;

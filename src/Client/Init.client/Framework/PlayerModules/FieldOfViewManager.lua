@@ -1,5 +1,3 @@
-local Framework = require(script.Parent.Parent);
-
 local FieldOfViewManager = {}
 FieldOfViewManager.__index = FieldOfViewManager;
 

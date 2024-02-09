@@ -242,7 +242,10 @@ end;
 
 function MovementHandler:PlayFootstepSound()
 	local FloorMaterial = Framework.GameVariables.Humanoid.FloorMaterial;
-	if not FloorMaterial then FloorMaterial = "Air"; end;
+	if not FloorMaterial then 
+		FloorMaterial = "Air"; 
+	end;
+	
 	local Material = string.split(tostring(FloorMaterial), "Enum.Material.")[2];
 
 	local MaterialSounds = FootstepSounds:FindFirstChild(Material)
