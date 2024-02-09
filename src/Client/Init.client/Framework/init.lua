@@ -29,8 +29,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local RunService = game:GetService("RunService");
 
 --// Folders
-local CharacterModules = script:WaitForChild("CharacterModules");
-local PlayerModules = script:WaitForChild("PlayerModules");
+local ModuleFolder = script:WaitForChild("Modules");
+local CharacterModules = ModuleFolder:WaitForChild("CharacterModules");
+local PlayerModules = ModuleFolder:WaitForChild("PlayerModules");
 
 --// [ Types: ]
 local Types = require(script.Types);
@@ -97,7 +98,8 @@ function FlareClient.loadClient(): FrameworkType?
 		local LoadingStartTick = tick();
 
 		--// Caching modules into a table
-		self:_ObserveAndCacheDirectory(script);
+		self:_ObserveAndCacheDirectory(ModuleFolder);
+		self:_ObserveAndCacheDirectory(script:WaitForChild("Utilities"));
 		self:_ObserveAndCacheDirectory(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Utilities"));
 		
 		--// Loading modules
