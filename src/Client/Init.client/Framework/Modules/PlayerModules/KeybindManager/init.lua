@@ -1,4 +1,4 @@
-local Framework = require(script.Parent.Parent);
+local Framework = require(script.Parent.Parent.Parent);
 
 local KeybindManager = {}
 KeybindManager.__index = KeybindManager;

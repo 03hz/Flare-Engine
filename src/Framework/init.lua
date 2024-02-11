@@ -149,7 +149,6 @@ end;
 ]=]
 
 function FlareServer:GetModulesFromCache(): Types.RequireType
-	assert(not FlareServer.__gameIsLoaded, "Whilst using Flare-Engine externally, please wait for the framework to load.");
 	return function(Args: string | ModuleScript): {}
 		if type(Args) == "string" then
 			local FoundModule = self.CachedModules[Args];
@@ -195,7 +194,7 @@ function FlareServer:_PreloadModuleDirectory(Directory: Instance): ()
 			end);
 
 			if not success and err then
-				print(Module.Name .. "Has failed to load. Error: " .. err);
+				warn(Module.Name .. "Has failed to load. Error: " .. err);
 			end;
 		end;
 	end;

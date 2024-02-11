@@ -1,4 +1,4 @@
-local Framework = require(script.Parent.Parent);
+local Framework = require(script.Parent.Parent.Parent);
 
 local MovementHandler = {}
 MovementHandler.__index = MovementHandler;

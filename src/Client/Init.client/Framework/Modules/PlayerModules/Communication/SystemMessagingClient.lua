@@ -1,4 +1,4 @@
-local Framework = require(script.Parent.Parent.Parent);
+local Framework = require(script.Parent.Parent.Parent.Parent);
 
 local SystemMessagingClient = {}
 SystemMessagingClient.__index = SystemMessagingClient;
