@@ -16,7 +16,7 @@ function SystemMessagingClient:Start()
 		end,
 		
 		SoftShutdownInitiated = function()
-			local SoftShutdownUI = require("SoftShutdownUI");
+			--// local SoftShutdownUI = require("SoftShutdownUI");
 			--// Do something
 		end,
 	});

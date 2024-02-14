@@ -69,8 +69,8 @@ function ServerStatusManager:Start()
 
 				task.wait(TimeTillUpdate);
 
-				local Promise = self:_InitiateServerRestart();
-				Promise:Wait()
+				local NewPromise = self:_InitiateServerRestart();
+				NewPromise:Wait()
 			end;
 		end;
 	end);
@@ -99,7 +99,7 @@ function ServerStatusManager:_InitiateServerRestart()
 		return self.TeleportServiceUtils.promiseTeleport(Configuration.SoftShutdownPlaceID, ServerPlayers, TeleportOptions);
 	end)
 		:Then(function(TeleportResult)
-			PlayerAddedCollector = nil;
+			PlayerAddedCollector:Disconnect();
 
 			local newTeleportOptions = Instance.new("TeleportOptions");
 			newTeleportOptions.ServerInstanceId = TeleportResult.PrivateServerId;

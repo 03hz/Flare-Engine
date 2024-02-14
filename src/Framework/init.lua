@@ -188,7 +188,7 @@ function FlareServer:_PreloadModuleDirectory(Directory: Instance): ()
 			local success, err = pcall(function()
 				local RequiredModule = require(Module);
 
-				if (type(RequiredModule) == "table") then
+				if type(RequiredModule) == "table" then
 					ModuleList[Module.Name] = RequiredModule;
 				end;
 			end);
@@ -201,7 +201,7 @@ function FlareServer:_PreloadModuleDirectory(Directory: Instance): ()
 
 	--// Initiating modules
 	for Name: string, Module: Types.BaseRuntimeModule in pairs(ModuleList) do
-		if (type(Module["Init"]) == "function") then
+		if type(Module["Init"]) == "function" then
 			ModuleList[Name] = Module.Init();
 		end;
 		
@@ -209,9 +209,9 @@ function FlareServer:_PreloadModuleDirectory(Directory: Instance): ()
 	end;
 
 	--// Starting modules
-	for Name: string, Module: Types.BaseRuntimeModule in pairs(ModuleList) do
+	for _, Module: Types.BaseRuntimeModule in pairs(ModuleList) do
 		coroutine.wrap(function()
-			if (type(Module["Start"]) == "function") then
+			if type(Module["Start"]) == "function" then
 				Module:Start();
 			end;
 		end)();

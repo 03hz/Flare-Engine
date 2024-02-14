@@ -13,18 +13,11 @@ type MessageData = {
 }
 
 local require = Framework:GetModulesFromCache();
-
-function SystemMessagingService:Init(): {}
-	local self = setmetatable({}, SystemMessagingService);
-
-	self.Network = require("Network");
-
-	return self;
-end;
+local Network = require("Network");
 
 function SystemMessagingService:SendServerNotification(NotificationType: string, NotificationData: {})
 	if NotificationData then
-		self.Network:FireAllClients("SendSystemNotification", NotificationType, NotificationData);
+		Network:FireAllClients("SendSystemNotification", NotificationType, NotificationData);
 	end;
 end;
 
