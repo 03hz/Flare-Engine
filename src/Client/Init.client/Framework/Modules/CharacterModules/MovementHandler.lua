@@ -15,20 +15,21 @@ local require = Framework:GetModulesFromCache();
 local Maid = require("Maid");
 
 --// Directories
-local Animations = ReplicatedStorage.Animations; -- Directory
-local FootstepSounds = nil; -- Directory
+local SharedFolder = ReplicatedStorage:WaitForChild("Shared");
+local Animations = SharedFolder:WaitForChild("Animations");
+local FootstepSounds = SharedFolder.Sounds:WaitForChild("Footsteps");
 
 --// Configuration
 local Config = {
-	["JUMP_COOLDOWN"] = 1.1,
+	["JUMP_COOLDOWN"] = 1,
 
-	["WALK_SPEED"] = 11,
-	["SPRINT_SPEED"] = 23,
-	["CROUCH_SPEED"] = 6,
+	["WALK_SPEED"] = 12,
+	["SPRINT_SPEED"] = 21,
+	["CROUCH_SPEED"] = 8,
 
-	["SPRINT_ANIMATION"] = Animations.Sprint,
-	["CROUCHING_ANIMATION"] = Animations.Crouch,
-	["LANDED_ANIMATION"] = Animations.Land
+	["SPRINT_ANIMATION"] = Animations:WaitForChild("Character"):WaitForChild("Sprint"),
+	["CROUCHING_ANIMATION"] = Animations:WaitForChild("Character"):WaitForChild("Crouch"),
+	["LANDED_ANIMATION"] = Animations:WaitForChild("Character"):WaitForChild("Land")
 }
 
 local States = {
@@ -48,6 +49,22 @@ local States = {
 	}
 }
 
+local function OverwriteDefaultAnimations()
+	local Character = Framework.GameVariables.Character;
+	local Animate = Character:WaitForChild("Animate");
+	local AnimDirectory = Animations:WaitForChild("Character"):WaitForChild("Default");
+	
+	Animate.idle.Animation1.AnimationId = AnimDirectory:WaitForChild("Idle1").AnimationId
+	Animate.idle.Animation2.AnimationId = AnimDirectory:WaitForChild("Idle2").AnimationId
+	Animate.walk.WalkAnim.AnimationId = AnimDirectory:WaitForChild("Walk").AnimationId
+	Animate.run.RunAnim.AnimationId = AnimDirectory:WaitForChild("Walk").AnimationId
+	Animate.jump.JumpAnim.AnimationId = AnimDirectory:WaitForChild("Jump").AnimationId
+	Animate.fall.FallAnim.AnimationId = AnimDirectory:WaitForChild("Fall").AnimationId
+	Animate.climb.ClimbAnim.AnimationId = AnimDirectory:WaitForChild("Climb").AnimationId
+	Animate.sit.SitAnim.AnimationId = "rbxassetid://0"
+	Animate.toolnone.ToolNoneAnim.AnimationId = "rbxassetid://0"
+end;
+
 --// [ Constructor: ]
 function MovementHandler.Init(): {}
 	local self = setmetatable({}, MovementHandler);
@@ -58,6 +75,9 @@ function MovementHandler.Init(): {}
 	--// Variables
 	self.CurrentState = "Idle"
 	self.LastJump = time();
+	OverwriteDefaultAnimations();
+	Framework.GameVariables.Character:WaitForChild("HumanoidRootPart"):WaitForChild("Running").SoundId = "rbxassetid://8319863579";
+	
 	self.Animations = {
 		["SPRINTING"] = Framework.GameVariables.Humanoid:LoadAnimation(Config.SPRINT_ANIMATION),
 		["CROUCHING"] = Framework.GameVariables.Humanoid:LoadAnimation(Config.CROUCHING_ANIMATION),
@@ -67,7 +87,7 @@ function MovementHandler.Init(): {}
 	for _, Animation in pairs(self.Animations) do
 		Animation.Priority = Enum.AnimationPriority.Idle;
 	end;
-
+	
 	self.Animations.LANDED.Priority = Enum.AnimationPriority.Movement;
 	
 	--// Setup
@@ -81,20 +101,20 @@ function MovementHandler.Init(): {}
 	Framework.GameVariables.Humanoid:SetAttribute(self.CurrentState, true);
 	
 	--// Footstep sounds
-	--[[MovementHandler._runtimeMaid:GiveTask(self.GameVariables.Humanoid.AnimationPlayed:Connect(function(PlayedTrack)
+	self._runtimeMaid:GiveTask(Framework.GameVariables.Humanoid.AnimationPlayed:Connect(function(PlayedTrack)
 		if PlayedTrack.Name ~= "WalkAnim" then return; end;
 		PlayedTrack:GetMarkerReachedSignal("FOOTSTEP"):Connect(function()
-			if CurrentState == "Idle" then
+			if self.CurrentState == "Idle" then
 				self:PlayFootstepSound();
 			end;
 		end);
 	end));
 
-	for _, Animation in pairs(Animations) do
-		MovementHandler._runtimeMaid:GiveTask(Animation:GetMarkerReachedSignal("FOOTSTEP"):Connect(function()
+	for _, Animation in pairs(self.Animations) do
+		self._runtimeMaid:GiveTask(Animation:GetMarkerReachedSignal("FOOTSTEP"):Connect(function()
 			self:PlayFootstepSound();
 		end));
-	end;]]
+	end;
 
 	--// Binds
 	KeybindManager:BindKey("Sprint", function()
@@ -153,6 +173,7 @@ function MovementHandler.Init(): {}
 
 	--// Sprinting
 	self._runtimeMaid:GiveTask(Framework.GameVariables.Humanoid.Running:Connect(function(Speed)
+		self.Animations.SPRINTING:AdjustSpeed(Framework.GameVariables.Character:FindFirstChild("HumanoidRootPart").Velocity.Magnitude / 13);
 		if Speed >= 10 and self.CurrentState == "Sprinting" and not self.Animations.SPRINTING.IsPlaying then
 			self.Animations.SPRINTING:Play(0.35);
 			FieldOfViewManager:SetFOV("MovementFOV", 10, 0.5);
@@ -168,7 +189,7 @@ function MovementHandler.Init(): {}
 	--// Other connections
 	self._runtimeMaid:GiveTask(Framework.GameVariables.Humanoid.StateChanged:Connect(function(OldState, NewState)
 		if NewState == Enum.HumanoidStateType.Freefall and self.Animations.SPRINTING.IsPlaying then
-			self.Animations.SPRINTING:Stop(0.2);
+			self.Animations.SPRINTING:Stop();
 		end;
 
 		if self.CurrentState == "Crouching" then
@@ -209,7 +230,8 @@ function MovementHandler.Init(): {}
 	--// Landed
 	self._runtimeMaid:GiveTask(Framework.GameVariables.Humanoid.StateChanged:Connect(function(OldState, NewState)
 		if OldState == Enum.HumanoidStateType.Freefall and NewState == Enum.HumanoidStateType.Landed and Framework.GameVariables.Character:FindFirstChild("HumanoidRootPart").Velocity.Y < -45 then
-			--FootstepSounds:WaitForChild("Landed"):Play();
+			FootstepSounds:WaitForChild("Landed"):Play();
+			self.Animations.LANDED:Play();
 		end;
 	end));
 	

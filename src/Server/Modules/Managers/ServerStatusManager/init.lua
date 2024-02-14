@@ -61,9 +61,8 @@ function ServerStatusManager:Start()
 						local ConvertedTime = self.TimeUtils.GetSecondsFromTimeString(Time);
 						task.wait(TimeTillUpdate - ConvertedTime);
 
-						SystemMessagingService:SendServerMessage({
-							Prefix = nil,
-							Message = `Server will be restarting in {Time}.`
+						SystemMessagingService:SendServerNotification("Message", {
+							Text = `Server will be restarting in {Time}.`
 						});
 					end);
 				end;

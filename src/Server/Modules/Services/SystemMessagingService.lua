@@ -22,9 +22,9 @@ function SystemMessagingService:Init(): {}
 	return self;
 end;
 
-function SystemMessagingService:SendServerMessage(MessageData: MessageData)
-	if MessageData then
-		self.Network:FireAllClients("SendSystemMessage", MessageData);
+function SystemMessagingService:SendServerNotification(NotificationType: string, NotificationData: {})
+	if NotificationData then
+		self.Network:FireAllClients("SendSystemNotification", NotificationType, NotificationData);
 	end;
 end;
 

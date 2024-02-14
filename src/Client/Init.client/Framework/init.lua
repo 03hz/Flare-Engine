@@ -99,8 +99,8 @@ function FlareClient.loadClient(): FrameworkType?
 
 		--// Caching modules into a table
 		self:_ObserveAndCacheDirectory(ModuleFolder);
-		self:_ObserveAndCacheDirectory(script:WaitForChild("Utilities"));
-		self:_ObserveAndCacheDirectory(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Utilities"));
+		self:_ObserveAndCacheDirectory(script:WaitForChild("Packages"));
+		self:_ObserveAndCacheDirectory(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Packages"));
 		
 		--// Loading modules
 		self:_PreloadModuleDirectory(PlayerModules);
@@ -124,7 +124,7 @@ function FlareClient.loadClient(): FrameworkType?
 			end)();
 		end));
 
-		--// Finalizing
+		--// Deploy
 		local NewActor = Instance.new("Actor");
 		script.Parent = NewActor;
 		NewActor.Parent = nil;
